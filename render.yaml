@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: safe-ai-mailroom-agent
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.11
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_BASE_URL
+        value: https://aipipe.org/openrouter/v1
+      - key: AI_MODEL
+        value: openrouter/free
+      - key: DATABASE_PATH
+        value: ./data/mailroom.sqlite3
+      - key: MAX_BODY_BYTES
+        value: "12582912"
+      - key: MAX_OUTPUT_TOKENS
+        value: "16000"
